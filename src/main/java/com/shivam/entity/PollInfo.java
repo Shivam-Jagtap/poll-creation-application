@@ -26,6 +26,6 @@ public class PollInfo {
 	private String userName;
 	private String pollName;
     private LocalDateTime creationTime;
-    private boolean isActive;
+    private boolean active;
   
 }
