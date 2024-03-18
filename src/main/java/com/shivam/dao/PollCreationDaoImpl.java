@@ -86,5 +86,14 @@ public class PollCreationDaoImpl implements PollDao {
 		return poll.get().getOptionName();
 	}
 	
+	@Override
+	public void updateOption(Integer optionId, String userName) {
+		// TODO Auto-generated method stub
+		selectionTable.updateVote(optionId, userName);
+	}
 	
+	@Override
+	public void changeStatus(Integer pollId,boolean status) {
+		pollsTable.changeActiveStatus(pollId, status);
+	}
 }

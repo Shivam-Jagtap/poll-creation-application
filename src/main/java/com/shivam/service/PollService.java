@@ -6,16 +6,18 @@ import com.shivam.dto.PollCreationDto;
 import com.shivam.dto.PollInfoDto;
 import com.shivam.dto.PollOptionDto;
 import com.shivam.dto.SelectionInfoDto;
+import com.shivam.dto.UserInfoDto;
 import com.shivam.entity.PollInfo;
 import com.shivam.entity.UserInfo;
 import com.shivam.valueObject.PollStatistics;
 import com.shivam.valueObject.UserNameAndPassword;
+import com.shivam.valueObject.UserNameValueObject;
 
 public interface PollService {
 
-	String verifyUser(UserNameAndPassword inputUser);
+	UserNameValueObject verifyUser(UserNameAndPassword inputUser);
 
-	UserInfo addOrUpdateUser(UserInfo newUser);
+	UserInfoDto addOrUpdateUser(UserInfo newUser);
 
 	PollInfoDto createPoll(PollCreationDto userAndPollInfo);
 
@@ -28,9 +30,14 @@ public interface PollService {
 	//this can give error - we are making fake poll
 	List<PollOptionDto> getPollOptions(Integer pollId);
 
-	// can be also used for update
+	
 	SelectionInfoDto saveVote(SelectionInfoDto choice);
+	
+	SelectionInfoDto updateVote(SelectionInfoDto choice);
+
 
 	List<PollStatistics> getStatisticsOfPoll(Integer pollId);
+
+	void changeStatus(Integer pollId, boolean status);
 
 }

@@ -24,11 +24,15 @@ public interface PollDao {
 //	List<PollOption> getOptionsForPoll(Integer pollId);
 
 	SelectionInfo saveOption(SelectionInfo selectedOption);
+	
+	void updateOption(Integer optionId , String userName);
 
 	List<SelectionInfo> getSelectionByPollId(Integer pollId);
 
 	List<PollOption> getOptionsForPoll(PollInfo pollId);
 
 	String getOptionName(Integer optionId);
+
+	void changeStatus(Integer pollId, boolean status);
 
 }

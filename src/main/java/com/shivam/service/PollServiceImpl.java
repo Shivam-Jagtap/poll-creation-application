@@ -14,12 +14,14 @@ import com.shivam.dto.PollCreationDto;
 import com.shivam.dto.PollInfoDto;
 import com.shivam.dto.PollOptionDto;
 import com.shivam.dto.SelectionInfoDto;
+import com.shivam.dto.UserInfoDto;
 import com.shivam.entity.PollInfo;
 import com.shivam.entity.PollOption;
 import com.shivam.entity.SelectionInfo;
 import com.shivam.entity.UserInfo;
 import com.shivam.valueObject.PollStatistics;
 import com.shivam.valueObject.UserNameAndPassword;
+import com.shivam.valueObject.UserNameValueObject;
 
 @Service
 public class PollServiceImpl implements PollService {
@@ -31,22 +33,28 @@ public class PollServiceImpl implements PollService {
 	ModelMapper mapper;
 
 	@Override
-	public String verifyUser(UserNameAndPassword inputUser) {
+	public UserNameValueObject verifyUser(UserNameAndPassword inputUser) {
 		UserInfo user = pollDao.getUser(inputUser.getUserName());
 		
-		
 		System.out.println("in service "+user);
+		UserNameValueObject userr = new UserNameValueObject();
+//		userr.setUserName(null);
 		if(user.getPassword().equals(inputUser.getPassword())) {
-			return user.getUserName();
+			userr.setUserName(user.getUserName());
+			return userr;
 		}
-		return null;
+		return userr;
 	}
 	
 	@Override
-	public UserInfo addOrUpdateUser(UserInfo newUser) {
+	public UserInfoDto addOrUpdateUser(UserInfo newUser) {
 		UserInfo user = new UserInfo();
+//		System.out.println("In adduser service newUser : "+newUser);
 		user = pollDao.addUser(newUser);
-		return user;
+//		System.out.println("In adduser service addeduser : "+user);
+
+		UserInfoDto userr = mapper.map(user, UserInfoDto.class);
+		return userr;
 	}
 	
 	@Override
@@ -96,6 +104,21 @@ public class PollServiceImpl implements PollService {
 	
 	@Override
 	public List<PollInfoDto> getActivePolls(){
+		List<PollInfo> li = pollDao.activePolls();
+		// this method when called will set all poll which are expired (>24hrs) status as active = false
+		for(PollInfo poll : li) {
+			LocalDateTime dateAndTime = poll.getCreationTime();
+			LocalDateTime hours = dateAndTime.plusHours(24);
+			if(hours.isAfter(LocalDateTime.now())) {
+				// valid poll
+			}else {
+				//change status
+				changeStatus(poll.getPollId(), false);
+			}
+		}
+		
+		
+		// get all active polls with active = true
 		List<PollInfo> l = pollDao.activePolls();
 		List<PollInfoDto> activePolls = new ArrayList<>();
 		
@@ -162,5 +185,17 @@ public class PollServiceImpl implements PollService {
 			pollStats.add(ps);
 		}
 		return pollStats;
+	}
+	
+	@Override
+	public SelectionInfoDto updateVote(SelectionInfoDto choice) {
+		// TODO Auto-generated method stub
+		pollDao.updateOption(choice.getOptionId(), choice.getUserName());
+		return choice;
+	}
+	
+	@Override
+	public void changeStatus(Integer pollId, boolean status) {
+		pollDao.changeStatus(pollId, status);
 	}
 }
