@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.shivam.dao.PollDao;
 import com.shivam.dto.PollCreationDto;
+import com.shivam.dto.PollDetailDto;
 import com.shivam.dto.PollInfoDto;
 import com.shivam.dto.PollOptionDto;
 import com.shivam.dto.SelectionInfoDto;
@@ -190,12 +191,26 @@ public class PollServiceImpl implements PollService {
 	@Override
 	public SelectionInfoDto updateVote(SelectionInfoDto choice) {
 		// TODO Auto-generated method stub
-		pollDao.updateOption(choice.getOptionId(), choice.getUserName());
+		pollDao.updateOption(choice.getOptionId(), choice.getUserName() , choice.getPollId());
 		return choice;
 	}
 	
 	@Override
 	public void changeStatus(Integer pollId, boolean status) {
 		pollDao.changeStatus(pollId, status);
+	}
+	
+	@Override
+	public PollDetailDto getPollFromId(Integer pollId) {
+		PollInfo p = pollDao.getPollDetails(pollId);
+		PollDetailDto poll = new PollDetailDto(p.getPollId(), p.getPollName(), p.isActive());
+		return poll;
+	}
+
+	@Override
+	public UserInfoDto getuserInfoByUserName(String userName) {
+		UserInfo user = pollDao.getUserInfo(userName) ;
+		UserInfoDto userInfoDto = mapper.map(user, UserInfoDto.class);
+	    return userInfoDto;
 	}
 }

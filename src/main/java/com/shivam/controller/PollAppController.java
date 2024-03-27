@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.shivam.dao.PollCreationDaoImpl;
 import com.shivam.dto.PollCreationDto;
+import com.shivam.dto.PollDetailDto;
 import com.shivam.dto.PollInfoDto;
 import com.shivam.dto.PollOptionDto;
 import com.shivam.dto.SelectionInfoDto;
@@ -88,7 +89,7 @@ public class PollAppController {
 	//not working properly
 	@PutMapping("updatevote")
 	public SelectionInfoDto updateVote(@RequestBody SelectionInfoDto choice) {
-		return pollService.saveVote(choice);
+		return pollService.updateVote(choice);
 	}
 	
 	@GetMapping("statistics/{pollId}")
@@ -101,4 +102,14 @@ public class PollAppController {
 //		pollService.changeStatus(pollId, false);
 //		return "done";
 //	}
+	
+	@GetMapping("getPollDetail/{pollId}")
+	public PollDetailDto getPollDetails(@PathVariable("pollId") Integer pollId) {
+		return pollService.getPollFromId(pollId);
+	}
+	
+	@GetMapping("getuser/{userName}")
+	public UserInfoDto getuserInfoByUser(@PathVariable("userName") String userName){
+		return pollService.getuserInfoByUserName(userName);
+	}
 }

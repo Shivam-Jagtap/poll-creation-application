@@ -25,7 +25,7 @@ public interface PollDao {
 
 	SelectionInfo saveOption(SelectionInfo selectedOption);
 	
-	void updateOption(Integer optionId , String userName);
+	void updateOption(Integer optionId , String userName , Integer pollId);
 
 	List<SelectionInfo> getSelectionByPollId(Integer pollId);
 
@@ -35,4 +35,7 @@ public interface PollDao {
 
 	void changeStatus(Integer pollId, boolean status);
 
+	PollInfo getPollDetails(Integer pollId);
+	
+	UserInfo getUserInfo(String userName) ;
 }

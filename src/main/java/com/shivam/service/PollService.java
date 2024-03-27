@@ -3,6 +3,7 @@ package com.shivam.service;
 import java.util.List;
 
 import com.shivam.dto.PollCreationDto;
+import com.shivam.dto.PollDetailDto;
 import com.shivam.dto.PollInfoDto;
 import com.shivam.dto.PollOptionDto;
 import com.shivam.dto.SelectionInfoDto;
@@ -30,14 +31,16 @@ public interface PollService {
 	//this can give error - we are making fake poll
 	List<PollOptionDto> getPollOptions(Integer pollId);
 
-	
 	SelectionInfoDto saveVote(SelectionInfoDto choice);
 	
 	SelectionInfoDto updateVote(SelectionInfoDto choice);
 
-
 	List<PollStatistics> getStatisticsOfPoll(Integer pollId);
 
 	void changeStatus(Integer pollId, boolean status);
+
+	PollDetailDto getPollFromId(Integer pollId);
+
+	UserInfoDto getuserInfoByUserName(String userName);
 
 }

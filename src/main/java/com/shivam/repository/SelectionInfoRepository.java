@@ -18,6 +18,6 @@ public interface SelectionInfoRepository extends JpaRepository<SelectionInfo, In
 	
 	@Modifying
 	@Transactional
-	@Query("UPDATE SelectionInfo s SET s.optionId = :optionId WHERE s.userName = :userName")
-	void updateVote(Integer optionId , String userName);
+	@Query("UPDATE SelectionInfo s SET s.optionId = :optionId WHERE s.userName = :userName and s.pollId = :pollId")
+	void updateVote(Integer optionId , String userName , Integer pollId);
 }
